@@ -1,37 +1,45 @@
 """
 mcp_server.py — Mock MCP Server
-Sprint 3: Implement ít nhất 2 MCP tools.
 
-Mô phỏng MCP (Model Context Protocol) interface trong Python.
-Agent (MCP client) gọi dispatch_tool() thay vì hard-code từng API.
+chạy phần này
 
-Tools available:
-    1. search_kb(query, top_k)           → tìm kiếm Knowledge Base
-    2. get_ticket_info(ticket_id)        → tra cứu thông tin ticket (mock data)
-    3. check_access_permission(level, requester_role)  → kiểm tra quyền truy cập
-    4. create_ticket(priority, title, description)     → tạo ticket mới (mock)
+python -c "
+import chromadb, os
+from sentence_transformers import SentenceTransformer
 
-Sử dụng:
-    from mcp_server import dispatch_tool, list_tools
+client = chromadb.PersistentClient(path='./chroma_db')
+col = client.get_or_create_collection('day09_docs')
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
-    # Discover available tools
-    tools = list_tools()
-
-    # Call a tool
-    result = dispatch_tool("search_kb", {"query": "SLA P1", "top_k": 3})
-
-Sprint 3 TODO:
-    - Option Standard: Sử dụng file này as-is (mock class)
-    - Option Advanced: Implement HTTP server với FastAPI hoặc dùng `mcp` library
+docs_dir = './data/docs'
+for fname in os.listdir(docs_dir):
+    with open(os.path.join(docs_dir, fname), encoding='utf-8') as f:
+        content = f.read()
+    # Thêm content vào collection
+    col.add(documents=[content], metadatas=[{'source': fname}], ids=[fname])
+    print(f'Indexed: {fname}')
+print('Index ready.')
+"
 
 Chạy thử:
     python mcp_server.py
 """
 
 import os
+import sys
 import json
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+
+try:
+    from fastapi import FastAPI, HTTPException
+    from pydantic import BaseModel
+    import uvicorn
+except ImportError:
+    FastAPI = None
+    HTTPException = None
+    BaseModel = None
+    uvicorn = None
 
 
 # ─────────────────────────────────────────────
@@ -328,21 +336,71 @@ def dispatch_tool(tool_name: str, tool_input: dict) -> dict:
 
 
 # ─────────────────────────────────────────────
+# FastAPI HTTP Server (Optional)
+# ─────────────────────────────────────────────
+
+class ToolCallPayload(BaseModel if BaseModel is not None else object):
+    tool_name: str
+    tool_input: Dict[str, Any] = {}
+
+
+def create_app() -> "FastAPI":
+    if FastAPI is None:
+        raise ImportError(
+            "FastAPI is not installed. Install optional requirements with `pip install fastapi uvicorn`"
+        )
+
+    app = FastAPI(
+        title="Mock MCP Server",
+        description="HTTP wrapper for MCP tool discovery and execution.",
+        version="1.0.0",
+    )
+
+    @app.get("/tools")
+    def api_list_tools():
+        return list_tools()
+
+    @app.post("/tool-call")
+    def api_tool_call(payload: ToolCallPayload):
+        result = dispatch_tool(payload.tool_name, payload.tool_input or {})
+        if result.get("error"):
+            raise HTTPException(status_code=400, detail=result)
+        return result
+
+    @app.get("/health")
+    def api_health():
+        return {"status": "ok"}
+
+    return app
+
+
+# ─────────────────────────────────────────────
 # Test & Demo
 # ─────────────────────────────────────────────
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] in {"serve", "runserver", "http"}:
+        if FastAPI is None or uvicorn is None:
+            print(
+                "FastAPI/uvicorn is not installed. Install optional requirements with `pip install fastapi uvicorn`."
+            )
+            sys.exit(1)
+        app = create_app()
+        print("Starting MCP HTTP server on http://127.0.0.1:8000")
+        uvicorn.run(app, host="127.0.0.1", port=8000)
+        sys.exit(0)
+
     print("=" * 60)
     print("MCP Server — Tool Discovery & Test")
     print("=" * 60)
 
     # 1. Discover tools
-    print("\n📋 Available Tools:")
+    print("\n Available Tools:")
     for tool in list_tools():
         print(f"  • {tool['name']}: {tool['description'][:60]}...")
 
     # 2. Test search_kb
-    print("\n🔍 Test: search_kb")
+    print("\n Test: search_kb")
     result = dispatch_tool("search_kb", {"query": "SLA P1 resolution time", "top_k": 2})
     if result.get("chunks"):
         for c in result["chunks"]:
@@ -351,14 +409,14 @@ if __name__ == "__main__":
         print(f"  Result: {result}")
 
     # 3. Test get_ticket_info
-    print("\n🎫 Test: get_ticket_info")
+    print("\n Test: get_ticket_info")
     ticket = dispatch_tool("get_ticket_info", {"ticket_id": "P1-LATEST"})
     print(f"  Ticket: {ticket.get('ticket_id')} | {ticket.get('priority')} | {ticket.get('status')}")
     if ticket.get("notifications_sent"):
         print(f"  Notifications: {ticket['notifications_sent']}")
 
     # 4. Test check_access_permission
-    print("\n🔐 Test: check_access_permission (Level 3, emergency)")
+    print("\n Test: check_access_permission (Level 3, emergency)")
     perm = dispatch_tool("check_access_permission", {
         "access_level": 3,
         "requester_role": "contractor",
@@ -369,10 +427,11 @@ if __name__ == "__main__":
     print(f"  emergency_override: {perm.get('emergency_override')}")
     print(f"  notes: {perm.get('notes')}")
 
-    # 5. Test invalid tool
+    # 5. Test invalid tool (intentional negative test)
     print("\n❌ Test: invalid tool")
     err = dispatch_tool("nonexistent_tool", {})
-    print(f"  Error: {err.get('error')}")
+    print("  This is an intentional test to confirm the dispatcher handles unknown tools correctly.")
+    print(f"  Result: {err.get('error')}")
+    print("  Expected: Tool not found error, with a list of available tool names.")
 
     print("\n✅ MCP server test done.")
-    print("\nTODO Sprint 3: Implement HTTP server nếu muốn bonus +2.")
