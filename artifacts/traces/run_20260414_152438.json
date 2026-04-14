@@ -1,0 +1,59 @@
+{
+  "task": "Tài khoản bị khóa sau bao nhiêu lần đăng nhập sai?",
+  "route_reason": "Defaulting to informational retrieval",
+  "risk_high": false,
+  "needs_tool": false,
+  "hitl_triggered": false,
+  "supervisor_route": "retrieval_worker",
+  "retrieved_chunks": [
+    {
+      "text": "ng phải do người dùng.\n- Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hàng.\n- Đơn hàng chưa được sử dụng hoặc chưa bị mở seal.\n\n=== Điều 3: Điều kiện áp dụng và ngoại lệ ===\nHoàn tiền — Điều kiện áp dụng:\nYêu cầu được gửi trong vòng 7 ngày kể từ thời điểm xác nhận đơn hàng.\n\nNgoại lệ không được hoàn tiền:\n- Sản phẩm thuộc danh mục hàng kỹ thuật số (license key, subscription).\n- Đơn hàng đã áp dụng mã giảm giá đặc biệt theo chương trình khuyến mãi Flash Sale.\n- Sản phẩm đã được kích hoạt hoặc đăng ký tài khoản.\n\n=== Điều 4: Quy trình xử lý yêu cầu hoàn tiền ===\nBước ",
+      "source": "policy_refund_v4.txt",
+      "score": 0.2405
+    },
+    {
+      "text": "hống ===\nEscalation chỉ áp dụng khi cần thay đổi quyền hệ thống ngoài quy trình thông thường.\nVí dụ: Khẩn cấp trong sự cố P1, cần cấp quyền tạm thời để fix incident.\n\nQuy trình escalation khẩn cấp:\n1. On-call IT Admin có thể cấp quyền tạm thời (max 24 giờ) sau khi được Tech Lead phê duyệt bằng lời.\n2. Sau 24 giờ, phải có ticket chính thức hoặc quyền bị thu hồi tự động.\n3. Mọi quyền tạm thời phải được ghi log vào hệ thống Security Audit.\n\n=== Section 5: Thu hồi quyền truy cập ===\nQuyền phải được thu hồi trong các trường hợp:\n- Nhân viên nghỉ việc: Thu hồi ngay trong ngày cuối.\n- Hết hạn contrac",
+      "source": "access_control_sop.txt",
+      "score": 0.194
+    },
+    {
+      "text": "ông?\nA: Mỗi tài khoản được kết nối VPN trên tối đa 2 thiết bị cùng lúc.\n\n=== Section 3: Phần mềm và license ===\n\nQ: Tôi cần cài phần mềm mới, phải làm gì?\nA: Gửi yêu cầu qua Jira project IT-SOFTWARE. Line Manager phải phê duyệt trước khi IT cài đặt.\n\nQ: Ai chịu trách nhiệm gia hạn license phần mềm?\nA: IT Procurement team quản lý tất cả license. Nhắc nhở sẽ được gửi 30 ngày trước khi hết hạn.\n\n=== Section 4: Thiết bị và phần cứng ===\n\nQ: Laptop mới được cấp sau bao lâu khi vào công ty?\nA: Laptop được cấp trong ngày onboarding đầu tiên. Nếu có vấn đề, liên hệ HR hoặc IT Admin.\n\nQ: Laptop bị hỏng",
+      "source": "it_helpdesk_faq.txt",
+      "score": 0.1741
+    },
+    {
+      "text": "IT HELPDESK FAQ — CÂU HỎI THƯỜNG GẶP\nSource: support/helpdesk-faq.md\nDepartment: IT\nEffective Date: 2026-01-20\nAccess: internal\n\n=== Section 1: Tài khoản và mật khẩu ===\n\nQ: Tôi quên mật khẩu, phải làm gì?\nA: Truy cập https://sso.company.internal/reset hoặc liên hệ Helpdesk qua ext. 9000. Mật khẩu mới sẽ được gửi qua email công ty trong vòng 5 phút.\n\nQ: Tài khoản bị khóa sau bao nhiêu lần đăng nhập sai?\nA: Tài khoản bị khóa sau 5 lần đăng nhập sai liên tiếp. Để mở khóa, liên hệ IT Helpdesk hoặc tự reset qua portal SSO.\n\nQ: Mật khẩu cần thay đổi định kỳ không?\nA: Có. Mật khẩu phải được thay đổi",
+      "source": "it_helpdesk_faq.txt",
+      "score": 0.1399
+    },
+    {
+      "text": "CHÍNH SÁCH HOÀN TIỀN - PHIÊN BẢN 4\nSource: policy/refund-v4.pdf\nDepartment: CS\nEffective Date: 2026-02-01\nAccess: internal\n\n=== Điều 1: Phạm vi áp dụng ===\nChính sách này áp dụng cho tất cả các đơn hàng được đặt trên hệ thống nội bộ kể từ ngày 01/02/2026.\nCác đơn hàng đặt trước ngày có hiệu lực sẽ áp dụng theo chính sách hoàn tiền phiên bản 3.\n\n=== Điều 2: Điều kiện được hoàn tiền ===\nKhách hàng được quyền yêu cầu hoàn tiền khi đáp ứng đủ các điều kiện sau:\n- Sản phẩm bị lỗi do nhà sản xuất, không phải do người dùng.\n- Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hà",
+      "source": "policy_refund_v4.txt",
+      "score": 0.1319
+    }
+  ],
+  "retrieved_sources": [
+    "access_control_sop.txt",
+    "it_helpdesk_faq.txt",
+    "policy_refund_v4.txt"
+  ],
+  "policy_result": {},
+  "mcp_tools_used": [],
+  "final_answer": "Tài khoản bị khóa sau 5 lần đăng nhập sai liên tiếp. Để mở khóa, liên hệ IT Helpdesk hoặc tự reset qua portal SSO.",
+  "sources": [
+    "it_helpdesk_faq.txt"
+  ],
+  "confidence": 0.95,
+  "history": [
+    "[init] task received: Tài khoản bị khóa sau bao nhiêu lần đăng nhập sai?",
+    "[supervisor] decided route: retrieval_worker reason: Defaulting to informational retrieval",
+    "[retrieval_worker] fetched chunks",
+    "[synthesis_worker] generated final answer in 1606ms"
+  ],
+  "workers_called": [
+    "retrieval_worker",
+    "synthesis_worker"
+  ],
+  "latency_ms": 1606,
+  "run_id": "run_20260414_152438"
+}

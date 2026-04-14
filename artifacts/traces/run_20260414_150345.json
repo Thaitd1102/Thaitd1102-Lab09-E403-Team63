@@ -1,0 +1,29 @@
+{
+  "task": "SLA xử lý ticket P1 là bao lâu?",
+  "route_reason": "Defaulting to informational retrieval | risk high flagged due to urgency or P1 status",
+  "risk_high": true,
+  "needs_tool": false,
+  "hitl_triggered": false,
+  "supervisor_route": "retrieval_worker",
+  "retrieved_chunks": [],
+  "retrieved_sources": [],
+  "policy_result": {},
+  "mcp_tools_used": [],
+  "final_answer": "SLA xử lý ticket P1 là 2 giờ.",
+  "sources": [
+    "sla_information.txt"
+  ],
+  "confidence": 0.95,
+  "history": [
+    "[init] task received: SLA xử lý ticket P1 là bao lâu?",
+    "[supervisor] decided route: retrieval_worker reason: Defaulting to informational retrieval | risk high flagged due to urgency or P1 status",
+    "[retrieval_worker] fetched chunks",
+    "[synthesis_worker] generated final answer in 3009ms"
+  ],
+  "workers_called": [
+    "retrieval_worker",
+    "synthesis_worker"
+  ],
+  "latency_ms": 3009,
+  "run_id": "run_20260414_150345"
+}

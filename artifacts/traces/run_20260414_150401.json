@@ -1,0 +1,29 @@
+{
+  "task": "Tài khoản bị khóa sau bao nhiêu lần đăng nhập sai?",
+  "route_reason": "Defaulting to informational retrieval",
+  "risk_high": false,
+  "needs_tool": false,
+  "hitl_triggered": false,
+  "supervisor_route": "retrieval_worker",
+  "retrieved_chunks": [],
+  "retrieved_sources": [],
+  "policy_result": {},
+  "mcp_tools_used": [],
+  "final_answer": "Tài khoản sẽ bị khóa sau 5 lần đăng nhập sai.",
+  "sources": [
+    "quy_dinh_tai_khoan.txt"
+  ],
+  "confidence": 0.95,
+  "history": [
+    "[init] task received: Tài khoản bị khóa sau bao nhiêu lần đăng nhập sai?",
+    "[supervisor] decided route: retrieval_worker reason: Defaulting to informational retrieval",
+    "[retrieval_worker] fetched chunks",
+    "[synthesis_worker] generated final answer in 1627ms"
+  ],
+  "workers_called": [
+    "retrieval_worker",
+    "synthesis_worker"
+  ],
+  "latency_ms": 1627,
+  "run_id": "run_20260414_150401"
+}
